@@ -26,7 +26,7 @@ public class CustomAuthEntryPoint extends BasicAuthenticationEntryPoint {
         response.setStatus(HttpStatus.FORBIDDEN.value());
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        apiResponse.setMessage("UNAUTHORIZED_ACCESS");
+        apiResponse.setMessage("UNAUTHORIZED_ACCESS :"+request.getAttribute("error_message"));
         apiResponse.setSuccess(false);
         response.getWriter().write(objectMapper.writeValueAsString(apiResponse));
         response.getWriter().flush();

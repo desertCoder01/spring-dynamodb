@@ -20,8 +20,6 @@ public class TokenProvider {
                 .withSubject(userDetails.getUsername())
                 .withIssuedAt(now)
                 .withExpiresAt(expiryDate)
-                .withClaim("role",userDetails.getRole())
-                .withClaim("authority",userDetails.getPermissions())
                 .sign(Algorithm.HMAC256(tokenSecret.getBytes()));
     }
 
@@ -33,5 +31,12 @@ public class TokenProvider {
                 .withIssuedAt(now)
                 .withExpiresAt(expiryDate)
                 .sign(Algorithm.HMAC256(tokenSecret.getBytes()));
+    }
+
+    public String getUsernameFromToken(String token) {
+        return JWT.require(Algorithm.HMAC256(tokenSecret.getBytes()))
+                .build()
+                .verify(token)
+                .getSubject();
     }
 }
