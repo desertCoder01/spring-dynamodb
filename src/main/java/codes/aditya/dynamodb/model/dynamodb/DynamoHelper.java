@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 @Slf4j
 @Component
 public class DynamoHelper {
@@ -30,7 +31,7 @@ public class DynamoHelper {
 
     // it will create all the tables of any package in on demand billing mode
     // it will also create corresponding index if defined inside any table class
-    @PostConstruct
+    //@PostConstruct
     public void createTable()
             throws IOException, ClassNotFoundException {
         log.info("Inside create table method");
