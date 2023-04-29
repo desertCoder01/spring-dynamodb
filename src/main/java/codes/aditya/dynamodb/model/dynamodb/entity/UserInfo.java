@@ -1,8 +1,6 @@
 package codes.aditya.dynamodb.model.dynamodb.entity;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import lombok.Builder;
 import lombok.Data;
 
@@ -19,4 +17,8 @@ public class UserInfo {
 
     @DynamoDBAttribute
     private String role;
+
+    @DynamoDBAttribute
+    @DynamoDBTyped(DynamoDBMapperFieldModel.DynamoDBAttributeType.BOOL)
+    private Boolean isActive;
 }

@@ -1,7 +1,9 @@
 package codes.aditya.dynamodb.controller;
 
+import codes.aditya.dynamodb.model.request.LoginRequest;
 import codes.aditya.dynamodb.model.request.SignupRequest;
 import codes.aditya.dynamodb.model.response.GenericApiResponse;
+import codes.aditya.dynamodb.model.response.LoginResponse;
 import codes.aditya.dynamodb.model.response.SignupResponse;
 import codes.aditya.dynamodb.service.IAuthService;
 import lombok.RequiredArgsConstructor;
@@ -25,15 +27,10 @@ public class AuthController {
         return ResponseEntity.status(response.getHttpStatusCode()).body(response);
     }
 
-    @GetMapping("/first")
-    String test(){
-        log.info("inside first method :");
-        return "Working fine";
-    }
-
-    @GetMapping("/second")
-    String testNext(){
-        log.info("inside second method :");
-        return "Working fine: next";
+    @PostMapping("/login")
+    ResponseEntity<GenericApiResponse<LoginResponse>> login(@RequestBody LoginRequest request){
+        GenericApiResponse<LoginResponse> response = authService.login(request);
+        response.setUri("/auth/login");
+        return ResponseEntity.status(response.getHttpStatusCode()).body(response);
     }
 }
