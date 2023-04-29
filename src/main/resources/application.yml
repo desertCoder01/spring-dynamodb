@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: spring-dynamodb-example
+
+server:
+  port: 8081
+
+app:
+  config:
+    dynamodb:
+      access-key: AKIA5STNF5WA3X3KNVHV
+      secret-key: ertLH+c0Ab056qR1btFccK4VwT1BEzAFXP9WMk2Y
+      end-point-url: http://dynamodb.ap-south-1.amazonaws.com
+      region: ap-south-1
