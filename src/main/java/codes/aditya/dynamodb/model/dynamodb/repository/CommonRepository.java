@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ObjectUtils;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
@@ -64,5 +61,10 @@ public class CommonRepository<T>  {
                 .withExpressionAttributeValues(eav);
         PaginatedQueryList<PermissionInfo> result = dynamoDBMapper.query(PermissionInfo.class, query);
         return result.stream().map(permit -> permit.getPermission()).collect(Collectors.toList());
+    }
+
+    public List<Object> batchLoad(Class<T> clazz, Iterable<? extends Object> itemsToGet) {
+        Map<String, List<Object>> batchResponseData = dynamoDBMapper.batchLoad(itemsToGet);
+        return batchResponseData.get(dynamoDBMapper.generateCreateTableRequest(clazz).getTableName());
     }
 }

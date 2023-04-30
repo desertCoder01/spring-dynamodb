@@ -18,7 +18,7 @@ public class UserController {
     private final IUserService userService;
 
     @PostMapping("/create/role")
-    ResponseEntity<GenericApiResponse<CreateRoleResponse>> createRoleWithPermissions(@RequestParam("role") String roleName,
+    ResponseEntity<GenericApiResponse<CreateRoleResponse>> createRoleWithPermissions(@RequestParam("role-name") String roleName,
                                                                                      @RequestBody List<String> permissions){
         GenericApiResponse<CreateRoleResponse> response = userService.createRole(roleName,permissions);
         response.setUri("/user/create/role");

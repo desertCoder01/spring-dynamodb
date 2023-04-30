@@ -20,6 +20,7 @@ public class UserService implements IUserService {
 
     @Override
     public GenericApiResponse<CreateRoleResponse> createRole(String roleName, List<String> permissions) {
+        CreateRoleResponse response = userServiceHelper.validateCreatePermissionRequest(roleName,permissions);
         return null;
     }
 }
