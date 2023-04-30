@@ -8,7 +8,7 @@ server:
 app:
   config:
     dynamodb:
-      access-key: AKIA5STNF5WA3X3KNVHV
-      secret-key: ertLH+c0Ab056qR1btFccK4VwT1BEzAFXP9WMk2Y
+      access-key: <YOUR_ACCESS_KEY>
+      secret-key: <YOUR_SECRET_KEY>
       end-point-url: http://dynamodb.ap-south-1.amazonaws.com
       region: ap-south-1
