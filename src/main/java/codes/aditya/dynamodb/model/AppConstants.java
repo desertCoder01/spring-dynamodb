@@ -2,7 +2,8 @@ package codes.aditya.dynamodb.model;
 
 public class AppConstants {
     public static final String [] AUTH_WHITELIST ={
-            "/auth/**"
+            "/auth/signup",
+            "/auth/login"
     };
 
     public static final String RUNTIME_ERROR = " Error while processing the request";

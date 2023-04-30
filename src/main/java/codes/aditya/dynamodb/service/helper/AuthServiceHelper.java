@@ -36,7 +36,7 @@ public class AuthServiceHelper {
     }
 
     public boolean checkForDuplicateUser(String email) {
-        UserInfo userInfo = (UserInfo)commonRepository.findByPartitionKey(UserInfo.class, email);
+        UserInfo userInfo = (UserInfo) commonRepository.findByPartitionKey(UserInfo.class, email);
         if(!ObjectUtils.isEmpty(userInfo)){
             throw new InvalidRequestException("Invalid request : User already registered with email :"+email);
         }

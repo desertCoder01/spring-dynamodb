@@ -31,7 +31,7 @@ public class DynamoHelper {
 
     // it will create all the tables of any package in on demand billing mode
     // it will also create corresponding index if defined inside any table class
-    //@PostConstruct
+//    @PostConstruct
     public void createTable()
             throws IOException, ClassNotFoundException {
         log.info("Inside create table method");

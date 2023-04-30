@@ -1,6 +1,7 @@
 package codes.aditya.dynamodb.model.dynamodb.repository;
 
 import codes.aditya.dynamodb.model.dynamodb.entity.PermissionInfo;
+import codes.aditya.dynamodb.model.dynamodb.entity.UserInfo;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedQueryList;
@@ -53,7 +54,7 @@ public class CommonRepository<T>  {
 
     public List<String> fetchPermissionsForRole(String role) {
         Map<String, AttributeValue> eav = new HashMap<>();
-        eav.put("isActive",new AttributeValue().withBOOL(true));
+        eav.put(":val1",new AttributeValue().withBOOL(true));
         PermissionInfo info = PermissionInfo.builder()
                 .role(role)
                 .build();

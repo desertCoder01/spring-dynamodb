@@ -1,5 +1,6 @@
 package codes.aditya.dynamodb.security;
 
+import codes.aditya.dynamodb.model.AppConstants;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,20 +34,33 @@ public class CustomAuthFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         log.info("received request with path :" + request.getServletPath());
         response.setHeader("Trace-Id", UUID.randomUUID().toString().replace("-", ""));
-        String token = request.getHeader(AUTHORIZATION);
-        if(StringUtils.hasText(token) && SecurityContextHolder.getContext().getAuthentication()==null){
-            try {
-                String username = tokenProvider.getUsernameFromToken(token);
-                UserDetails userDetails = userService.loadUserByUsername(username);
-                UsernamePasswordAuthenticationToken usernamePasswordAuthentication = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
-                usernamePasswordAuthentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthentication);
-            }catch (Exception ex){
-                log.info(ex.getMessage());
-                request.setAttribute("error_message",ex.getMessage());
+        if(checkForSecure(request.getServletPath())){
+            filterChain.doFilter(request,response);
+        }else {
+            String token = request.getHeader(AUTHORIZATION);
+            if(StringUtils.hasText(token) && SecurityContextHolder.getContext().getAuthentication()==null){
+                try {
+                    String username = tokenProvider.getUsernameFromToken(token);
+                    UserDetails userDetails = userService.loadUserByUsername(username);
+                    UsernamePasswordAuthenticationToken usernamePasswordAuthentication =
+                            new UsernamePasswordAuthenticationToken(
+                                    userDetails, null, userDetails.getAuthorities());
+                    usernamePasswordAuthentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthentication);
+                }catch (Exception ex){
+                    log.info(ex.getMessage());
+                    request.setAttribute("error_message",ex.getMessage());
+                }
             }
+            filterChain.doFilter(request, response);
         }
-        filterChain.doFilter(request, response);
+    }
+
+    private boolean checkForSecure(String servletPath) {
+        for(String test : AppConstants.AUTH_WHITELIST){
+            if(servletPath.contains(test))
+                return true;
+        }
+        return false;
     }
 }

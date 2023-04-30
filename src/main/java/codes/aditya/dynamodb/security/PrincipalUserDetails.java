@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 public class PrincipalUserDetails implements UserDetails {
@@ -17,40 +18,44 @@ public class PrincipalUserDetails implements UserDetails {
     private String role;
     private List<String> permissions;
 
-    public PrincipalUserDetails(String email, String role, List<String> permissions) {
+    public PrincipalUserDetails(String email, String role,String password, List<String> permissions) {
         this.role = role;
         this.permissions = permissions;
         this.username = email;
+        this.password = password;
     }
 
     public static PrincipalUserDetails createDetail(UserInfo userInfo, List<String> permissions) {
-        return new PrincipalUserDetails(userInfo.getEmail(), userInfo.getRole(), permissions);
+        return new PrincipalUserDetails(userInfo.getEmail(), userInfo.getRole(), userInfo.getPassword(), permissions);
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Set<Authority> set = new HashSet<>();
-        set.add(new Authority(role));
+        set.add(new Authority("ROLE_"+role));
+        set.addAll(permissions.stream()
+                .map(permit -> new Authority(permit))
+                .collect(Collectors.toSet()));
         return set;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return true;
     }
 }
